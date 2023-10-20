@@ -49,7 +49,7 @@ backup() {
         touch "$file_name"
         docker run --rm -it \
             -v "$volume_name":/source:ro \
-            -v "$(PWD)/$file_name":/backup.tar.gz \
+            -v "$PWD/$file_name":/backup.tar.gz \
             alpine \
             ash -c "cd /source && tar -czf /backup.tar.gz ."
         echo "Volume $volume_name backed up to file $file_name"
@@ -62,7 +62,7 @@ restore() {
         local volume_name="${file_name%.tar.gz}"
         echo "Restoring volume $volume_name from file $file_name"
         docker run --rm -it \
-            -v "$(PWD)/$file_name":/backup.tar.gz:ro \
+            -v "$PWD/$file_name":/backup.tar.gz:ro \
             -v "$volume_name":/destination \
             alpine \
             ash -c "cd /destination && tar -xzf /backup.tar.gz"
